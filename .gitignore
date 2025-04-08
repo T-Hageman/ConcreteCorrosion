@@ -1,0 +1,16 @@
+CorrosionFEM
+Results/
+*.bin
+*.bin.info
+build/
+CMakeFiles/
+cmake_install.cmake
+CMakeCache.txt
+MakeFile
+*.asv
+*.mp4
+*.h5
+*.hdf5
+*.mat
+TestCases/PostProcessingReqs/meshpart-master
+TestCases/PostProcessingReqs/distinguishable_colors.m

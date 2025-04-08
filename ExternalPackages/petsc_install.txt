@@ -1,0 +1,19 @@
+set PETSC_DIR and PETSC_ARCH in ~/.bashrc and restart linux
+
+install intel-onemkl from https://www.intel.com/content/www/us/en/developer/tools/oneapi/base-toolkit-download.html?operatingsystem=linux&distributions=online
+add to ~/.bashrc and restart: source /home/thageman/cpp_libraries/intel_onemkl/setvars.sh intel64
+
+from petsc base folder, do:
+./configure PETSC_ARCH=linux-gnu --with-scalapack-include=/home/thageman/cpp_libraries/intel_onemkl/mkl/2022.2.0/include --with-scalapack-lib="-L/home/thageman/cpp_libraries/intel_onemkl/mkl/2022.2.0/lib/intel64 -lmkl_scalapack_lp64 -lmkl_blacs_intelmpi_lp64" --with-mpi-dir=/home/thageman/cpp_libraries/intel_onemkl/mpi/2021.7.0 --with-mkl=/home/thageman/cpp_libraries/intel_onemkl/mkl/2022.2.0 --with-blas-lapack-dir=/home/thageman/cpp_libraries/intel_onemkl/mkl/2022.2.0 --with-mkl_pardiso-dir=/home/thageman/cpp_libraries/intel_onemkl/mkl/2022.2.0 --with-mkl_cpardiso-dir=/home/thageman/cpp_libraries/intel_onemkl/mkl/2022.2.0 --download-hdf5 --download-mumps --with-clanguage=cxx --download-cmake --with-debugging=1
+
+for HPC:
+./configure PETSC_ARCH=$PETSC_ARCH --with-scalapack-include=$MKLROOT/include --with-scalapack-lib="-L$MKLROOT/lib/intel64 -lmkl_scalapack_lp64 -lmkl_blacs_intelmpi_lp64" --with-mpi-dir=$I_MPI_ROOT --with-mkl=$MKLROOT --with-blas-lapack-dir=$MKLROOT --with-mkl_pardiso-dir=$MKLROOT --with-mkl_cpardiso-dir=$MKLROOT --with-clanguage=cxx --with-debugging=0 --with-hdf5-dir=$EBROOTHDF5 --with-cmake-dir=$EBROOTCMAKE --download-mumps
+
+--download-hdf5 --download-mumps --download-cmake 
+
+
+
+next, do:
+make all check
+
+

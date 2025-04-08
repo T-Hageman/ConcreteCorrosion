@@ -1,0 +1,48 @@
+{
+    "configurations": [
+        {
+            "name": "RunCodeEChem",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/CorrosionFEM",
+            "preLaunchTask": "Build",
+            "args": ["TestCases/ElectroChemistry/Test_ElectroChem.json"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "logging": {
+                "trace": true
+            },
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb and add better child debugging",
+                    "text": "-enable-pretty-printing -gdb-set detach-on-fork off",
+                    "ignoreFailures": true
+                }
+            ]
+        },     
+        {
+            "name": "EChem32",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "/home/engs2604/Codes/Libraries/Intel/mpi/2021.10.0/bin/mpiexec",
+            "preLaunchTask": "Build",
+            "args": ["-np", "32","${workspaceFolder}/CorrosionFEM","TestCases/ElectroChemistry/Test_ElectroChem.json"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb and add better child debugging",
+                    "text": "-enable-pretty-printing -gdb-set detach-on-fork off",
+                    "ignoreFailures": true
+                }
+            ]
+        }
+    ],
+    "version": "2.0.0"
+}

@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${PETSC_DIR}/include",
+                "${PETSC_DIR}/${PETSC_ARCH}/include",
+                "${LIBRARY_DIR}/rapidjson/include",
+                "${PETSC_DIR}/${PETSC_ARCH}/externalpackages/hdf5-1.12.1/src",
+                "${LIBRARY_DIR}/HighFive/include",
+                "${LIBRARY_DIR}/eigen",
+                "${LIBRARY_DIR}/VTK/include/vtk-9.3"
+            ],
+            "defines": ["LOCALENVIRONMENT"],
+            "compilerPath": "${I_MPI_ROOT}/bin/mpicxx",
+            "cStandard": "gnu17",
+            "cppStandard": "gnu++17",
+            "intelliSenseMode": "linux-gcc-x64",
+            "configurationProvider": "ms-vscode.makefile-tools"
+        }
+    ],
+    "version": 4
+}

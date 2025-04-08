@@ -1,0 +1,285 @@
+{ 
+    "Restart":{
+        "Restartable": false,
+        "Saveloc": "Results/Backup",
+        "SaveFrequency": 100,
+        "BackUps": 3
+    },
+    "Logs":{
+        "InfoLevel": 2
+    },
+    "mesh":{
+        "dim":3,
+        "file":"TestCases/ElectroChemistry/Mesh/Beam_32c.h5",
+        "ipcount1D": 3
+    },
+    "properties":{
+        "Species":{
+            "Types": ["H", "OH", "Fe", "FeOH", "Na", "Cl", "O2"],
+            "UseChemPotentials": false,
+            "H":{
+                "D": 9.3e-9,
+                "z": 1,
+                "C0": 1.0e-8,
+                "Aqueous": true
+            },
+            "OH":{
+                "D": 5.3e-9,
+                "z": -1,
+                "C0": 1.0e0,
+                "Aqueous": true
+            },
+            "Fe":{
+                "D": 1.4e-9,
+                "z": 2,
+                "C0": 0.0,
+                "Aqueous": true
+            },
+            "FeOH":{
+                "D": 1.0e-9,
+                "z": 1,
+                "C0": 0.0,
+                "Aqueous": true
+            },
+            "Na":{
+                "D": 1.3e-9,
+                "z": 1,
+                "C0": "Neutrality",
+                "Aqueous": true
+            },
+            "Cl":{
+                "D": 2.0e-9,
+                "z": -1,
+                "C0": 10.0,
+                "Aqueous": true
+            },
+            "O2":{
+                "D": 1.0e-9,
+                "z": 0,
+                "C0": 1.0,
+                "Aqueous": false
+            }
+        },
+        "VolumeReactions":{
+            "Reactions": ["Auto-Ionisation","Corrosion1","Corrosion2"],
+            "Auto-Ionisation":{
+                "Type": "Equilibrium",
+                "K": 1.0e-14,
+                "k_dummy": 1.0e7,
+                "Species_In":[],
+                "n_In":[],
+                "Species_Out":["H","OH"],
+                "n_Out":[1,1],
+                "C_ref": 1.0e3,
+                "Lumped": true
+            },
+            "Corrosion1":{
+                "Type": "Dynamic",
+                "k": [1.0e1, 1.0e1],
+                "Species_In": ["Fe"],
+                "n_In": [1],
+                "Species_Out": ["FeOH","H"],
+                "n_Out": [1,1],
+                "C_ref": 1.0e3,
+                "Lumped": true
+            },
+            "Corrosion2":{
+                "Type": "Dynamic",
+                "k": [1.0e-2, 0.0],
+                "Species_In": ["FeOH"],
+                "n_In": [1],
+                "Species_Out": ["H"],
+                "n_Out": [1],
+                "C_ref": 1.0e3,
+                "Lumped": true
+            }
+        },
+        "SurfaceReactions":{
+            "Reactions": ["HER","OER","Corrosion"],
+            "HER":{
+                "Reaction": "2H+ + 2e- <-> H2",
+                "Type": "Electrochemical",
+                "i0": [1.0e-2, 0.0],
+                "alpha": 0.5,
+                "E_eq": 0.0,
+                "electrons_In": 2,
+                "Species_In":["H"],
+                "n_In":[2],
+                "Species_Out":[],
+                "n_Out":[],
+                "C_ref": 1.0e3,
+                "Surface": "Cathode"
+            }, 
+            "OER":{
+                "Reaction": "O2 + 2H_2O + 4e- <-> 4OH-",
+                "Type": "Electrochemical",
+                "i0": [1.0e-5, 1.0e-5],
+                "alpha": 0.5,
+                "E_eq": 0.4,
+                "electrons_In": 4,
+                "Species_In":["O2"],
+                "n_In":[1],
+                "Species_Out":["OH"],
+                "n_Out":[4],
+                "C_ref": 1.0e3,
+                "Surface": "Cathode"
+            },        
+            "Corrosion":{
+                "Reaction": "Fe2+ + 2e- <-> Fe",
+                "Type": "Electrochemical",
+                "i0": [1.0e0, 1.0e0],
+                "alpha": 0.5,
+                "E_eq": -0.4,
+                "electrons_In": 2,
+                "Species_In":["Fe"],
+                "n_In":[1],
+                "Species_Out":[],
+                "n_Out":[],
+                "C_ref": 1.0e3,
+                "Surface": "Anode"
+            }
+        },
+        "TimeDiscretisation":{
+            "Scheme": "Euler"
+        }
+    },
+    "Dofs":{
+        "DofNames": ["H", "OH", "Fe", "FeOH", "Na", "Cl", "O2", "ePot","Em"],
+        "DofStep":  [0,   0,    0,    0,      0,     0,    0,     0,     0]
+    },
+    "nonlinSolver":{ 
+        "max_it": 30,
+        "max_outer_it": 1,
+        "convCrit": [1.0e-3, 1.0e10, 1.0e-6],
+        "tiny": [1.0e-3, 1.0e-99, 1.0e-14],
+        "linesearch": true,
+        "linesearchLims": [0.25, 1],
+        "LinSolver":{
+            "Type": "Pardiso",
+            "IOptionIdx": [],
+            "IOptionVals": []
+        },
+        "Initialization":{
+            "Type": "ElectroChemistry",
+            "InteriorGroup": "Interior"
+        }
+    },
+    "TimeSolver":{
+        "dt": 1.0,
+        "tmax": 2419200.0,
+        "outputN": 10,
+        "dtGrow": 1.05,
+        "dtMax": 3600.0
+    },
+    "Outputs":{
+        "OutputMeshOnlyOnce": true,
+        "SaveFolder":"Results",
+        "ElementGroups": ["Interior","Pit","Bar"],
+        "Interior":{
+            "Nodes": ["H", "OH", "Fe", "FeOH", "Na", "Cl", "O2", "ePot"],
+            "IP": []
+        },
+        "Pit":{
+            "Nodes": ["H", "OH", "Fe", "FeOH", "Na", "Cl", "O2", "ePot", "HER", "OER", "Corrosion"],
+            "IP": []
+        },
+        "Bar":{
+            "Nodes": ["H", "OH", "Fe", "FeOH", "Na", "Cl", "O2", "ePot", "HER", "OER", "Corrosion"],
+            "IP": []
+        }
+    },
+    "Models":{
+        "Names":["Surface","NernstPlanck","Boundary1","Boundary2"],
+        "NernstPlanck":{
+            "_Comment": "Diffusion-electromigration",
+            "Name": "Electrochemistry/NernstPlanck",
+            "ElementGroup_C": "Interior",
+            "ElementGroup_E": "Interior",
+            "Porosity": 0.05,
+            "PorosityFactor": 1.5,
+            "Sw": 1.0,
+            "S_irr": 0.2,
+            "SatFactor": 2.0,
+            "Stabilisation": "None"
+        },
+        "Surface":{
+            "_Comment": "Electrochemical surface reactions",
+            "Name": "Electrochemistry/ElectroSurface",
+            "AreaGroups_C": ["Pit", "Bar"],
+            "AreaGroups_E": ["Pit", "Bar"],
+            "SurfaceReactions": [["Cathode","Anode"],["Cathode"]],
+            "ChargeConservation": true,
+            "E_m": 0.0,
+            "ActiveCurrent_Threshold": 1.0e-5
+        },
+        "Boundary1":{
+            "Name": "Electrochemistry/EchemConstraints",
+            "NodeGroup_C":"Left",
+            "NodeGroup_E":"Left",
+            "Species": ["H", "OH", "Fe", "FeOH", "Na", "Cl", "O2"],
+            "ePot": 0.0
+        },
+        "Boundary2":{
+            "Name": "Electrochemistry/EchemConstraints",
+            "NodeGroup_C":"Top",
+            "NodeGroup_E":"Top",
+            "Species": ["H", "OH", "Fe", "FeOH", "Na", "Cl", "O2"],
+            "ePot": 0.0
+        }
+    },
+    "Visualisation":{
+        "_Plots": ["O2","H","OER","HER","OPot","plot","plot2","plot3"],
+        "Plots": ["O2","H","plot","plot2","plot3"],
+        "O2":{
+            "Type": "Surf_3D",
+            "Dof": "O2",
+            "ElementGroup": "Symmetry",
+            "Frequency": "step"
+        },
+        "H":{
+            "Type": "Surf_3D",
+            "Dof": "H",
+            "ElementGroup": "Symmetry",
+            "Frequency": "step",
+            "LogScale": true
+        },
+        "OER":{
+            "Type": "Surf_3D",
+            "Dof": "OER",
+            "ElementGroup": "Bar",
+            "Frequency": "step",
+            "LogScale": true
+        },
+        "HER":{
+            "Type": "Surf_3D",
+            "Dof": "HER",
+            "ElementGroup": "Bar",
+            "Frequency": "step",
+            "LogScale": true
+        },
+        "OPot":{
+            "Type": "Surf_3D",
+            "Dof": "Overpotential",
+            "ElementGroup": "Bar",
+            "Frequency": "step"
+        },
+        "plot":{
+            "Type": "Plot_XY",
+            "x": "time",
+            "y": ["Surface/i_HER", "Surface/i_OER", "Surface/i_Corrosion"],
+            "Frequency": "step"
+        },
+        "plot2":{
+            "Type": "Plot_XY",
+            "x": "time",
+            "y": ["Surface/E_m"],
+            "Frequency": "step"
+        },
+        "plot3":{
+            "Type": "Plot_XY",
+            "x": "time",
+            "y": ["Surface/A_HER", "Surface/A_OER", "Surface/A_Corrosion"],
+            "Frequency": "step"
+        }
+    }
+}
