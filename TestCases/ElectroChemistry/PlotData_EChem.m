@@ -60,8 +60,8 @@ while read == false;
 			DIP{i} = h5read(dataFile,GroupName{i}+DataNamesIPs{i});
 		end
 
-		%tDataTypes = h5read(timeDataFile,"/TimeDataTypes");
-		%tData = h5read(timeDataFile,"/TimeData");
+		tDataTypes = h5read(timeDataFile,"/TimeDataTypes");
+		tData = h5read(timeDataFile,"/TimeData");
 
 		read = true;
 	catch ME
@@ -86,6 +86,15 @@ for i=1:8
 	view(0,0)
 end
 
+if (individualfigures == false)
+	f = figure;
+	t = tiledlayout('flow');
+	t.Padding = "tight";
+	t.TileSpacing = "tight";
+	f.Units = "centimeters";
+	f.Position = [1, 0, 50, 25];
+end
+
 DataNamesNodes{9} = "E_m-ePot";
 EM = tData(end,5);
 D{9} = D{9} - EM;
@@ -104,68 +113,21 @@ for i=9:12
 	axis equal
 end
 
-% if (individualfigures)
-% 	figure
-% else
-% 	nexttile
-% end
-
-% D{1}(D{1}<0) = nan;
-% pH = -log10(D{1}/1000);
-% 	PlotNodeData(X, Y, Z, pH);
-% 	title("pH");
-% 	view(0,0)
-% 
-% 
-% 
-% if (individualfigures)
-% 	figure
-% else
-% 	nexttile
-% end
-% 
-% D{2}(D{2}<0) = nan;
-% pOH = -log10(D{2}/1000);
-% 	PlotNodeData(X, Y, Z, pOH);
-% 	title("pOH");
-% 	view(0,0)
-
-% if (individualfigures)
-% 	figure
-% else
-% 	nexttile
-% end
-% 
-% PlotNodeData(X, Y, Z, 14-(pH+pOH));
-% title("pH Error");
-% view(0,0)
-
-% if (individualfigures)
-% 	figure
-% else
-% 	nexttile
-% end
-% D{1}(X>0.01) = nan;
-% pH = -log10(D{1}/1000);
-% 	PlotNodeData(X, Y, Z, pH);
-% 	title("pH");
-% 	view(0,0)
-
 if (individualfigures)
 	figure
 else
 	nexttile
 end
 yyaxis left
-semilogy(tData(:,1),abs(tData(:,2)),'DisplayName','H')
+semilogy(tData(:,1),abs(tData(:,4)),'DisplayName','H')
 hold on
-semilogy(tData(:,1),abs(tData(:,3)),'DisplayName','O')
-semilogy(tData(:,1),abs(tData(:,4)),'DisplayName','Fe')
+semilogy(tData(:,1),abs(tData(:,6)),'DisplayName','O')
+semilogy(tData(:,1),abs(tData(:,8)),'DisplayName','Fe')
 xlabel('time [s]');
 ylabel('I [A]');
 
 yyaxis right
-plot(tData(:,1),tData(:,5),'DisplayName','E_m')
+plot(tData(:,1),tData(:,10),'DisplayName','E_m')
 ylabel('E_m [V_SHE]')
 leg = legend('Location','southoutside','NumColumns',4);
 
@@ -176,16 +138,16 @@ else
 	nexttile
 end
 yyaxis left
-plot(tData(:,1)/3600,tData(:,2),'DisplayName','H')
+plot(tData(:,1)/3600,tData(:,4),'DisplayName','H')
 hold on
-plot(tData(:,1)/3600,tData(:,3),'DisplayName','O')
-plot(tData(:,1)/3600,tData(:,4),'DisplayName','Fe')
-plot(tData(:,1)/3600,tData(:,2)+tData(:,3)+tData(:,4),'k','DisplayName','I_tot')
+plot(tData(:,1)/3600,tData(:,6),'DisplayName','O')
+plot(tData(:,1)/3600,tData(:,8),'DisplayName','Fe')
+plot(tData(:,1)/3600,tData(:,4)+tData(:,6)+tData(:,8),'k','DisplayName','I_tot')
 xlabel('time [hour]');
 ylabel('I [A]');
 
 yyaxis right
-plot(tData(:,1)/3600,tData(:,5),'DisplayName','E_m')
+plot(tData(:,1)/3600,tData(:,10),'DisplayName','E_m')
 ylabel('E_m [V_SHE]')
 leg = legend('Location','southoutside','NumColumns',4);
 
@@ -231,7 +193,7 @@ if (size(X,1)==10)
 			Data_el(i,:) = Data(order,el);
 		end
 	end
-	p = patch(X_el',Y_el',Z_el',Data_el','EdgeColor','interp','FaceColor','k','FaceAlpha',1.0);
+	p = patch(X_el',Y_el',Z_el',Data_el','EdgeColor','interp','FaceColor','interp','FaceAlpha',1.0);
 	colorbar
 	clim([min(min(Data_el)) max(max(Data_el))+1e-12])
 elseif (size(X,1)==6)
@@ -251,7 +213,7 @@ else
 	elseif (size(X,1)==6)
 		order = [1 2 3];
 	else
-		order = [1 2 4 3];
+		order = [1 2 3];
 	end
 	for i=1:size(X,2)
 		X_el(i,:) = X(order,i);

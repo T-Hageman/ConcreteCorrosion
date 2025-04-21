@@ -64,7 +64,11 @@ Plot_Surf3D::Plot_Surf3D(std::string name, inputData &inputs, Physics *phys): Vi
 
     inputs.GetRequired(DataName, {"Visualisation",Name,"Dof"});
     size_t UNUSED;
-    phys->dofspace->getDofTypesSteps(DataName, UNUSED, DofStep_Data);
+    try {
+        physics->dofspace->getDofTypesSteps(DataName, UNUSED, DofStep_Data);
+    } catch (const std::invalid_argument& e){
+        DofStep_Data = 0;
+    }
 
     LogScale = false;
     inputs.GetOptional(LogScale, {"Visualisation",Name,"LogScale"});

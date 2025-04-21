@@ -228,8 +228,7 @@
         }
     },
     "Visualisation":{
-        "_Plots": ["O2","H","OER","HER","OPot","plot","plot2","plot3"],
-        "Plots": ["O2","H","plot","plot2","plot3"],
+        "Plots": ["O2","H","OER","HER","OPot","plot","plot2","plot3"],
         "O2":{
             "Type": "Surf_3D",
             "Dof": "O2",
