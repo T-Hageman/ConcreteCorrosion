@@ -10,7 +10,7 @@ Finite element simulations for modelling the corrosion of rebar within concrete,
 
 If you find this project useful in your research or work, please consider citing the following paper:
 
-> T Hageman, C Andrade, E Martinez-Paneda, *Corrosion of metal reinforcements within concrete and localisation of supporting reactions under natural conditions*, Electrochimica Acta, 2025. https://doi.org/XXX
+> T Hageman, C Andrade, E Martinez-Paneda, *Corrosion of metal reinforcements within concrete and localisation of supporting reactions under natural conditions*, Electrochimica Acta, 2025. https://doi.org/10.1016/j.electacta.2025.146203
 
 ## Installation and Usage
 
