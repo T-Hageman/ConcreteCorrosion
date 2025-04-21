@@ -16,3 +16,5 @@ If you find this project useful in your research or work, please consider citing
 
 To install and use this project, follow the instructions provided in the [documentation](Documentation/Doc.pdf). This includes details on dependencies, setup, and running the simulation.
 
+
+![Figure 2: Description of the figure](Documentation/Screenshot.png)
